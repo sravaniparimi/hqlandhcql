@@ -1,0 +1,39 @@
+package com.school;
+
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class MainLogic {
+
+	public static void main(String[] args) {
+		Configuration cf=new Configuration();
+		cf.configure("configuration.xml");
+		
+		SessionFactory sf=cf.buildSessionFactory();
+       
+		Session se=sf.openSession();
+		Transaction tx=se.beginTransaction();
+		Query qr=se.createQuery("from Student s where s.id=:jnit");
+		qr.setParameter("jnit", 1026);
+		List li=qr.list();
+		Iterator i=li.iterator();
+		while(i.hasNext()) {
+			Student x=(Student)i.next();
+			System.out.println(x.getId()+" "+x.getName()+" "+x.getMarks());
+		}
+		
+		tx.commit();
+		
+		se.close();
+		sf.close();
+		
+	}
+
+}
